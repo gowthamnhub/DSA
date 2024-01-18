@@ -1,0 +1,3096 @@
+
+
+BigO:
+------
+	--> Worst Case
+	--> Remove Constants
+	--> Different terms for different entities - O(n + m), O(n*m)
+	--> Drop non dominant items. if suppose - O(n + n^2) - drop n ==> O(n^2).
+	
+Space Complexity
+-----------------
+		Variable declaration
+		Datastructure used
+		Function calls
+		Allocations
+		
+	How can we use it in our code review
+	--------------------------------------
+		--> Check if there are any loops - how can it perform for different 'n'
+		--> Think about its time/space complexity
+		--> if it uses any unnecessary loops.
+		--> Unused variables
+		--> function calls inside loops/recursion.]
+		--> Then naming conventions
+		--> Then check the logics for the respective story / defect
+		--> Test case coverage.
+		
+In General Code Reviews:
+------------------------	
+
+
+
+In Interview:
+--------------
+	--> How to solve the problem?
+			-->  Understand the given problem, note down the key points (inputs, expected o/p, if there are any others provided)
+			--> Start with simple approach we think can be done to solve the problem.
+			--> think through its TC, SC.
+			--> think through approach 2 to reduce TC.
+			--> code it and mention what should be the TC and SC.
+			--> think through different inputs (positive, negative, null, no inputs passed) and how the function handles it.
+			--> think about edge cases.	
+			--> then handover to interviewer and explain.	
+			
+	Then DataStructures + Algorithms = Programs
+
+Basic DataStructures:			Algorithms
+----------------------			-----------	
+Arrays, 						Sorting	
+Stacks,                         Dynamic Programming
+Queues, 						BFS + DFS (Searching)
+Linked Lists, 					Recursion
+Trees, 
+Tries, 
+Graphs, 
+Hash Tables  
+	
+Data Structure - A data structure is a collection of values.
+Algorithms - Algorithms is steps/processes we put into place to manipulate these collection of values.	
+
+So, All the data structure we add to store data in our programs going to add up space on RAM, thats why space complexity 
+is being calculated to see if that trade off is necessary over time complexity or if it does add values.
+
+In google interview, interviewer asked about if the data / array is going to have 10Million records, how will you process,
+the answer from interviewee is if the memory does not fit such data, then we can process it in chunks of data and return data.
+may be parallely too.
+
+		--> Need to understand how do we process these in chunks? but yes first lets cover all the datastructures + algos then we go deeper.
+		
+In JS Arrays:
+-----------------
+			arrays.push() --> O(1) - just adds item at the end
+			arrays.pop() --> O(1) - removes item at the end
+			arrays.unshift() --> O(n) - as it needs to adjust all the items from the first till end, to accomodate new first item.
+			arrays.splice(2, 0, 'middleInsert') --> O(n) - same as above in the worst, it can insert from 0 and remove some of the 
+			items as well. 
+			
+		Basically arrays good for lookup O(1), push O(1), not good for insert, delete
+		
+When Arrays can be used:
+-------------------------		
+		So Arrays are good for Fast Access, Fast insert/remove from the end, but insertion/deletion in middle takes O(n) worst case.
+		And if static arrays - it is of fixed size, above is for dynamic arrays.
+		
+		
+		
+Array implementation using Javascript
+// Online Javascript Editor for free
+// Write, Edit and Run your Javascript code using JS Online Compiler
+
+class MyArrays
+{
+    constructor()
+    {
+        this.length =0;
+        this.data = {}
+    }
+    
+    push(item)
+    {
+        this.data[this.length] = item;
+        this.length++;
+        return this.length;
+    }
+    
+    pop(item)
+    {
+        delete this.data[this.length-1]
+        this.length--;
+        return this.length;
+    }
+}
+
+
+const myArray = new MyArrays();
+myArray.push('1')
+myArray.pop()
+console.log(myArray)	
+
+
+
+Reverse a string:
+--------------------
+// Online C# Editor for free
+// Write, Edit and Run your C# code using C# Online Compiler
+
+using System;
+using System.Collections.Generic;
+
+public class HelloWorld
+{
+    public static void Main(string[] args)
+    {
+        string input = "namahtwog";
+        string reversed = ReverseString(input);
+        Console.WriteLine(reversed);
+    }
+    
+    public static string ReverseString(string s1)
+    {
+        if(s1 == null) return "Invalid String";
+        int length = s1.Length;
+        string result = "";
+        for(int i=length-1; i>=0; i--)
+        {
+            result = result + s1[i];
+            //Console.Write(s1[i]);
+        }
+        
+        return result;
+    }
+}
+
+Merge Two Sorted Arrays:
+--------------------------
+// Online C# Editor for free
+// Write, Edit and Run your C# code using C# Online Compiler
+
+using System;
+using System.Collections.Generic;
+
+public class HelloWorld
+{
+    public static void Main(string[] args)
+    {
+        int[] arr1 = {0,3,4,31};
+        int[] arr2 = {4,6,30};
+        int[] result = MergeSortedArrays(arr1, arr2);
+        foreach(int i in result)
+        Console.WriteLine(i);
+    }
+    
+    public static int[] MergeSortedArrays(int[] arr1, int[] arr2)
+    {
+       if(arr1 == null || arr2 == null) return new int[0];
+        int len1 = arr1.Length;
+        int len2 = arr2.Length;
+        
+        int[] result = new int[len1 + len2];
+        
+        int i=0,j=0,z=0;
+        int a1 = 0; int a2 = 0;
+        Console.Write("result length: " + result.Length  + "\n");
+        while(i<len1 || j<len2)
+        {
+            if(i<len1) 
+            {
+                a1 = arr1[i];
+            }
+            else
+            {
+                a1 = a2 + 1;//when comes here, there is possiblity existin a1 value less than a2, it keeps continue the same , so we make it higher than a2 purposely.
+            }
+            if(j<len2) {
+                a2 = arr2[j];
+            }
+            else
+            {
+                a2 = a1 + 1;
+            }
+            
+            if(a1 < a2)
+            {
+                result[z] = a1;
+                i++;z++;
+            }
+            else
+            {
+                result[z] = a2;
+                j++;z++;
+            }
+        }
+        
+        return result;
+    }
+}
+
+
+Hash Tables
+------------
+	Basically it stores in key, value pairs in a table structure. For accessing/adding "key" is used.
+	But here when we pass the "key", it passes through black box called "hash function" to generate the hash key which 
+	maps to memory location/address where exactly the respective "key,value" pair is stored.
+	
+	There are many hash techniques like MD5, SHA1, SHA256. It is assumed this hash function is usually very fast for accessing/adding
+	and time complexity for it is O(1). There is no way to decrypt/decode the value from hash key thats generated.
+	for hello : 5d41402abc4b2a76b9719d911017c592 (MD5 hash) - any time you try "hello" same hash key gets generated.
+	
+	So it looks like it is best for all cases and we must go for using hash table always, but the downside of it can be seen from this
+	https://www.cs.usfca.edu/~galles/visualization/OpenHash.html animation, how basically it stores data.
+	
+	Since the memory is limited, sometimes the data which is being hashed can generate a same memory address as some data already present,
+	and in linked list way the values gets saved. Think through when the list goes farther and when we try to access for a data,
+	in worst case it can become very worse. I just checked from the above link.
+	This linked list way of storing data is called as "Hash Collision".
+	
+	Difference between Arrays and HashTables:
+		-> Arrays - stores date in continuous memory location.
+				  For Searching - uses O(N)
+					  Insert/Delete - uses O(N) - due to shifting
+					  Push - O(1) 
+					  lookup - O(1).	
+		-> HashTable - stores in non continous and random memory spaces
+					 - uses hash function to generate the memory address to store data.	
+				  For Searching - uses O(1)
+					  Insert/Delete - uses O(1) - no shifting - although hash collision can happen.
+					  lookup - O(1) 
+	
+	
+Hash Table Implementation with JS:
+-------------------------------------
+class HashTable
+{
+    constructor(size)
+    {
+        this.data = new Array(size);
+    }
+    
+    _hash(key)
+    {
+        let hash=0;
+        for(let i=0;i<key.length;i++)
+        {
+          hash = (hash + key.charCodeAt(i) * i) % this.data.length;
+        }
+        console.log(hash);
+        return hash;
+    }
+    set(key, value)
+    {
+        let address = this._hash(key);
+        let obj = {
+                key: key,
+                value: value
+            }
+        if(!this.data[address])
+        {
+            this.data[address] = [];
+            this.data[address].push(obj);
+        }
+        else
+        {
+           this.data[address].push(obj); 
+        }
+    }
+    get(key)
+    {
+        let address = this._hash(key);
+        let currentItem = this.data[address];
+        console.log(currentItem)
+        if(currentItem)
+        {
+            for(let i=0;i<currentItem.length;i++)
+            {
+                return this.data[address][i].value;
+            }
+        }
+    }
+}
+
+const myHashTable = new HashTable(50);
+//myHashTable._hash('grapsjd2133hakdsadess')
+myHashTable.set('grapes',10000);
+myHashTable.set('apples',1000);
+//console.log(myHashTable)
+console.log(myHashTable.get('grapes'))
+console.log(myHashTable.get('apples'))
+
+//Keys with collision
+class HashTable
+{
+    constructor(size)
+    {
+        this.data = new Array(size);
+    }
+    
+    _hash(key)
+    {
+        let hash=0;
+        for(let i=0;i<key.length;i++)
+        {
+          hash = (hash + key.charCodeAt(i) * i) % this.data.length;
+        }
+        console.log(hash);
+        return hash;
+    }
+    set(key, value)
+    {
+        let address = this._hash(key);
+        let obj = {
+                key: key,
+                value: value
+            }
+        if(!this.data[address])
+        {
+            this.data[address] = [];
+            this.data[address].push(obj);
+        }
+        else
+        {
+           this.data[address].push(obj); 
+        }
+    }
+    get(key)
+    {
+        let address = this._hash(key);
+        let currentItem = this.data[address];
+        console.log(currentItem)
+        if(currentItem)
+        {
+            for(let i=0;i<currentItem.length;i++)
+            {
+                return this.data[address][i].value;
+            }
+        }
+    }
+    keys()
+    {
+        var keysArray = [];
+      for(let i=0;i<this.data.length;i++)
+      {
+          let currentItem = this.data[i];
+          if(currentItem)
+          {
+              for(let j=0; j<currentItem.length;j++)
+              {
+                keysArray.push(this.data[i][j].key)//to push and return all the keys as this is linked list kind of iteration.
+              }
+          }
+      }
+      return keysArray;
+    }
+}
+
+const myHashTable = new HashTable(2);
+//myHashTable._hash('grapsjd2133hakdsadess')
+myHashTable.set('grapes',10000);
+myHashTable.set('apples',1000);
+myHashTable.set('oranges',2000);
+//console.log(myHashTable)
+//console.log(myHashTable.get('grapes'))
+//console.log(myHashTable.get('apples'))
+console.log(myHashTable.keys());
+
+
+/*First Recurring Charcter / Number*/
+// Online C# Editor for free
+// Write, Edit and Run your C# code using C# Online Compiler
+
+using System;
+using System.Collections.Generic;
+
+public class HelloWorld
+{
+    public static void Main(string[] args)
+    {
+        int[] array = {0,1,2,-1,3,3};
+        string result = FirstRecurringNumber(array);
+        Console.WriteLine ("Recurring character: " + result);
+    }
+    public static string FirstRecurringNumber(int[] array)
+    {
+        HashSet<int> hs = new HashSet<int>();
+        foreach(int i in array)
+        {
+            if(!hs.Contains(i))
+            {
+              hs.Add(i);
+            }
+            else {
+              return i.ToString();
+            }
+        }
+        return "undefined";
+    }
+}
+	
+	
+Lets start with Linked List:
+-----------------------------
+Problems with Arrays - 
+---------------------------
+	static in memory, even if its dynamic when it reaches end, from next, it will create again the
+same size - doubling up of memory space - which also cost more. More over operation of insert/delete is costly due to moving of 
+items to left/right.
+
+Problems with HashTables - 
+----------------------------
+	no ordering of data (generally ordered address location are easy to be searched/iterated than scattered) and hash collision.
+
+Linked List - its a list of items that are linked together. - https://visualgo.net/ - linked list animation
+								   	
+From animation, it can be seen that all insert, delete, search takes O(N) operation, only advantage I can think of is
+like we can create and add node link to the list, but we don't have to double up the memory size of the list as in arrays and also no movement of 
+items.
+
+And it helps in hash tables to create node and link together to have the data stored within same hash key.
+
+A Pointer: is simply a reference pointing to another location/address.
+
+Singly Linked List vs Doubly Linked List:
+------------------------------------------
+	--> Single uses less memory as it has only one pointer to hold next, but doubly uses little more memory as it needs extra pointer
+	to hold previous node.
+	--> Singly can only traverse on forward direction.
+	--> Doubly offers ability to traverse in both forward and reverse direction.
+	--> Doubly helps little more efficiency in searching elements as we can traverse from both to arrive at the data.
+	--> Singly offers better efficiency while insertion / deletion as it does not need to take care of the previous pointer.
+
+Implementation of Linked List (more refined and modularized)
+------------------------------
+class LinkedList
+{
+    constructor(value)
+    {
+        this.head = {
+            value: value,
+            next: null
+        }
+        this.tail = this.head;
+        this.length = 1;
+    }
+    append(value)
+    {
+        const newNode = new Node(value);
+        this.tail.next = newNode;
+        this.tail = newNode;
+        this.length++;
+    }
+    prepend(value)
+    {
+        const newNode = new Node(value);
+        newNode.next = this.head;
+        this.head = newNode;
+        this.length++;
+    }
+    insert(index, value)
+    {
+        if(index <= 0)
+        {
+            this.prepend(value);
+        }
+        else if(index >= this.length)
+        {
+            this.append(value);
+        }
+        else
+        {
+           const newNode = new Node(value);
+           let prevNode = this.traverseToIndex(index - 1);
+           let targetNode = prevNode.next;
+           prevNode.next = newNode;
+           newNode.next = targetNode;
+           this.length++;
+           console.log(this.printList());
+        }
+    }
+    traverseToIndex(index)
+    {
+        let idx = 0;
+        let curr = this.head;
+        while(idx < index)
+        {
+           curr = curr.next;
+           idx++;
+        }
+        return curr;
+    }
+    remove(index)
+    {
+        if(index < 0 || index >=this.length)
+        {
+            throw new Error("the target index invalid or not found");
+        }
+        if(index == 0)
+        {
+            this.head = this.head.next;
+            console.log(this.printList());
+        }
+        else
+        {
+          let prev = this.traverseToIndex(index-1);
+          let targetNode = prev.next;
+          prev.next = targetNode.next;
+          console.log(this.printList());
+        }
+    }
+    printList()
+    {
+        let curr = this.head;
+        const array = [];
+        while(curr !== null)
+        {
+            array.push(curr.value);
+            curr = curr.next;
+        }
+        return array;
+    }
+}
+class Node
+{
+    constructor(value)
+    {
+        this.value = value;
+        this.next = null;
+    }
+}
+
+const myLinkedList = new LinkedList(10);
+myLinkedList.append(5);
+myLinkedList.append(16);
+myLinkedList.prepend(1);
+console.log(myLinkedList.printList());
+myLinkedList.insert(0, 100);//insert at 0th and change head test case.
+
+myLinkedList.insert(2, 26);
+console.log(myLinkedList.printList())
+//console.log('head: ', myLinkedList.head.value)
+//myLinkedList.remove(5);
+//myLinkedList.remove(0);
+//myLinkedList.remove(3);
+//console.log(`tail: `, myLinkedList.tail.value) //when removing at tail th 
+
+
+Implementation of Doubly Linked List if similar but it adds extra pointer to hold "previous" node.
+-----------------------------------------------------------------------------------------------------
+class DoublyLinkedList
+{
+    constructor(value)
+    {
+        this.head = {
+            value: value,
+            next: null,
+            prev: null
+        }
+        this.tail = this.head;
+        this.length = 1;
+    }
+    append(value)
+    {
+        const newNode = new Node(value);
+        newNode.prev = this.tail;
+        this.tail.next = newNode;
+        this.tail = newNode;
+        this.length++;
+    }
+    prepend(value)
+    {
+        const newNode = new Node(value);
+        newNode.next = this.head;
+        this.head.prev = newNode;
+        this.head = newNode;
+        this.length++;
+    }
+    insert(index, value)
+    {
+        if(index <= 0)
+        {
+            this.prepend(value);
+        }
+        else if(index >= this.length)
+        {
+            this.append(value);
+        }
+        else
+        {
+           const newNode = new Node(value);
+           let prevNode = this.traverseToIndex(index - 1);
+           let targetNode = prevNode.next;
+           prevNode.next = newNode;
+           newNode.prev = prevNode;
+           targetNode.prev = newNode;
+           newNode.next = targetNode;
+          
+           this.length++;
+           console.log(this.printList());
+        }
+    }
+    traverseToIndex(index)
+    {
+        let idx = 0;
+        let curr = this.head;
+        while(idx < index)
+        {
+           curr = curr.next;
+           idx++;
+        }
+        return curr;
+    }
+    remove(index)
+    {
+        if(index < 0 || index >=this.length)
+        {
+            throw new Error("the target index invalid or not found");
+        }
+        if(index == 0)
+        {
+            this.head = this.head.next;
+            this.head.prev = null;
+            console.log(this.printList());
+        }
+        else
+        {
+          let prev = this.traverseToIndex(index-1);
+          let targetNode = prev.next;
+          let nextNode = targetNode.next;
+          prev.next = nextNode;
+          nextNode.prev = prev;
+          console.log(this.printList());
+        }
+    }
+    printList()
+    {
+        let curr = this.head;
+        const array = [];
+        while(curr !== null)
+        {
+            array.push(curr.value);
+            curr = curr.next;
+        }
+        return array;
+    }
+}
+class Node
+{
+    constructor(value)
+    {
+        this.value = value;
+        this.next = null;
+        this.prev = null;
+    }
+}
+
+const myDoubleLinkedList = new DoublyLinkedList(10);
+console.log(myDoubleLinkedList);
+myDoubleLinkedList.append(5);
+myDoubleLinkedList.prepend(15);
+//console.log(myDoubleLinkedList.printList());
+myDoubleLinkedList.insert(2,100);
+myDoubleLinkedList.remove(2);
+console.log(myDoubleLinkedList);
+
+Reverse the Linked List
+-------------------------
+class LinkedList
+{
+    constructor(value)
+    {
+        this.head = {
+            value: value,
+            next: null
+        }
+        this.tail = this.head;
+        this.length = 1;
+    }
+    append(value)
+    {
+        const newNode = new Node(value);
+        this.tail.next = newNode;
+        this.tail = newNode;
+        this.length++;
+    }
+    prepend(value)
+    {
+        const newNode = new Node(value);
+        newNode.next = this.head;
+        this.head = newNode;
+        this.length++;
+    }
+    insert(index, value)
+    {
+        if(index <= 0)
+        {
+            this.prepend(value);
+        }
+        else if(index >= this.length)
+        {
+            this.append(value);
+        }
+        else
+        {
+           const newNode = new Node(value);
+           let prevNode = this.traverseToIndex(index - 1);
+           let targetNode = prevNode.next;
+           prevNode.next = newNode;
+           newNode.next = targetNode;
+           this.length++;
+           console.log(this.printList());
+        }
+    }
+    traverseToIndex(index)
+    {
+        let idx = 0;
+        let curr = this.head;
+        while(idx < index)
+        {
+           curr = curr.next;
+           idx++;
+        }
+        return curr;
+    }
+    remove(index)
+    {
+        if(index < 0 || index >=this.length)
+        {
+            throw new Error("the target index invalid or not found");
+        }
+        if(index == 0)
+        {
+            this.head = this.head.next;
+            console.log(this.printList());
+        }
+        else
+        {
+          let prev = this.traverseToIndex(index-1);
+          let targetNode = prev.next;
+          prev.next = targetNode.next;
+          console.log(this.printList());
+        }
+    }
+    reverse()
+    {
+        if(this.length == 1) return this.head;
+        //let tempHead = this.head;
+        let curr = this.head;
+        this.tail = this.head;
+        let prev = null;
+        while(curr !== null)
+        {
+            //take back up of current's next
+            let temp = curr.next;
+            //reverse the current's next pointer backwards
+            curr.next = prev;
+            //now current is done, make the current as previous
+            prev = curr;
+             //now make the temp as current one
+            curr = temp;
+        }
+        //change the head to prev as curr is null.
+        this.head = prev;
+        return this.head;
+    }
+    printList()
+    {
+        let curr = this.head;
+        const array = [];
+        while(curr !== null)
+        {
+            array.push(curr.value);
+            curr = curr.next;
+        }
+        return array;
+    }
+}
+class Node
+{
+    constructor(value)
+    {
+        this.value = value;
+        this.next = null;
+    }
+}
+
+const myLinkedList = new LinkedList(10);
+myLinkedList.append(5);
+myLinkedList.append(16);
+myLinkedList.prepend(1);
+console.log(myLinkedList.printList());
+myLinkedList.insert(0, 100);//insert at 0th and change head test case.
+
+myLinkedList.insert(2, 26);
+console.log(myLinkedList.printList());
+console.log(myLinkedList);
+myLinkedList.reverse();
+console.log(myLinkedList.printList());
+console.log(myLinkedList);
+//console.log('head: ', myLinkedList.head.value)
+//myLinkedList.remove(5);
+//myLinkedList.remove(0);
+//myLinkedList.remove(3);
+//console.log(`tail: `, myLinkedList.tail.value) //when removing at tail th 
+
+Stacks and Queues:
+-------------------
+Stack and Queues are Linear datastructures.
+Stack - LIFO - operations are push, pop, peek (O(1)), lookup (O(n))
+			--> Eg: Browser History
+			--> why we need to build it with arrays - basically in stack we need to remove the last item, and accessing / deleting the last item from arrays pretty straight forward with index of [length-1].
+			--> But if we use Linked List deleting from last would be difficult as we need to traverse across to get it.
+					--> but he suggests, arrays and linked list both work fairly well. will need to see how it is implemented.
+			--> With doubly linked list, its more memory consuming with extra pointers.
+			--> Hence its wise to use Arrays I think.
+			
+		Stacks uses/examples: undo/redo, browser history, call stack.
+			
+			
+Queue - FIFO - operations are enqueue, dequeue, peek (O(1)), lookup (O(n))
+		--> its bad to build Queue using arrays - as it unshift from first, needs to do move all the rest items backwards which is
+		costly.
+		--> since its delete from first, Linked List is better with lesser operations and much better efficient than arrays.
+		
+		Queues uses/examples: Job Scheduler, incoming requests in web booking app/shopping app (think even more).
+
+
+Javascript optional:
+----------------------
+JS is a single threaded but can be non-blocking, though it has only one call stack, with the help of features like Web API, Callback queues
+, Event loop so that actuall stack can keep continue executing the other instructions until the long function/network call completes the 
+run and return data.
+
+==> Call stack
+==> Web API (setTimeout, setInterval) - browser features, not js engine's1
+==> Call back queue - picks call back functions from web API
+==> Event loop - keeps checking stack if its empty and callback queue anything needs to be pushed for next execution.
+
+
+Eg:
+----
+console.log(1)
+setTimeout(() => {
+    console.log(2)
+},0)
+console.log(3)           
+1
+3
+undefined
+2
+
+Stack implementation using Linked List
+---------------------------------------
+class Node
+{
+    constructor(value)
+    {
+        this.value = value;
+        this.next = null;
+    }
+}
+class Stack
+{
+    constructor()
+    {
+        this.top = null;
+        this.bottom = null;
+        this.length = 0;
+    }
+    push(value)//add new element/node at the top
+    {
+        //Chaining is not from bottom to top, from top to bottom.
+        const newNode = new Node(value);
+        //check if stack has already some nodes
+        if(!this.isEmpty())
+        {
+         //before we make the top to newNode, store the top in some temp
+          let holdingPointer = this.top;    
+          this.top = newNode; //new node becomes new top
+          //make the new top's next to the old top(that saved in temp)
+          this.top.next = holdingPointer;
+          //do not touch bottom here at all.
+          //this.bottom = this.top;//existing top become new bottom
+        }
+        else
+        {
+            this.top = newNode;
+            this.bottom = newNode;
+        }
+        this.length++;
+        return this.top.value;
+    }
+    pop()//remove top element
+    {
+        //check if empty simply return null/error
+        if(this.isEmpty())
+        {
+            return null;
+        }
+        //if length is 1, then make all top, bottom to null, reduce length
+        if(this.length === 1)
+        {
+            console.log('popped node: ', this.top);
+            this.top = null;
+            this.bottom = null;
+            this.length--;
+            return this;
+        }
+        //if nothing else, then change the top pointer to point to point top's next node.
+       // let secondTop = this.top.next;
+       console.log('popped node: ', this.top);
+       this.top = this.top.next;
+       // this.top = secondTop;
+        this.length--;
+        //then make top next pointing to nowhere so that garbage collector take care of the not used memory location and clean it up.
+        //this.top.next = null;//basically this is also not required.
+    }
+    peek()//return top element
+    {
+        if(this.isEmpty()) 
+        {
+            return null;
+        }
+        
+        return this.top.value;
+    }
+    isEmpty()
+    {
+        return this.length === 0;
+    }
+    display()
+    {
+        
+    }
+};
+const stack = new Stack();
+stack.push('google');
+stack.push('twitter');
+stack.push('discord');
+//stack.push(21);
+console.log(stack.peek())
+stack.pop();
+stack.pop();
+stack.pop();
+console.log(stack)
+
+Stack implementation using Arrays (Very much straight forward and fairly simple than Linked List)
+---------------------------------------------------------------------------------------------------
+class Stack
+{
+    constructor()
+    {
+        this.data = [];
+    }
+    push(value)//add new element/node at the top
+    {
+        this.data.push(value);
+        return this;
+    }
+    pop()//remove top element
+    {
+        if(this.isEmpty())
+        throw new Error('stack is empty');
+       this.data.pop();
+       return this;
+    }
+    peek()//return top element
+    {
+        return this.data[this.data.length - 1];
+    }
+    isEmpty()
+    {
+        return this.data.length === 0;
+    }
+};
+const stack = new Stack();
+stack.push('google');
+console.log(stack.isEmpty());
+
+stack.push('twitter');
+stack.push('discord');
+console.log(stack)
+console.log(stack.peek())
+stack.pop();
+console.log(stack)
+stack.pop();
+console.log(stack)
+stack.pop();
+console.log(stack)
+
+Queue Implementation using Linked List
+----------------------------------------
+class Node
+{
+    constructor(value)
+    {
+        this.value = value;
+        this.next = null;
+    }
+}
+class Queue
+{
+    constructor()
+    {
+        this.first = null;
+        this.last = null;
+        this.length = 0;
+    }
+    enqueue(value)
+    {
+        //create new node
+        const newNode = new Node(value);
+        //if empty make first and last point new node
+        if(this.isEmpty())
+        {
+            this.first = newNode;
+            this.last = newNode;
+        }
+        //if some items exist, make last next to new node, and make new node as last
+        else
+        {
+            this.last.next = newNode;
+            this.last = newNode;
+        }
+        //once after adding, length increment
+        this.length++;
+    }
+    dequeue()
+    {
+        if(this.isEmpty())
+        {
+            throw new Error('Queue is empty')
+        }
+        //if only one item exist, make first, second, length to default
+        else if(this.length === 1)
+        {
+            this.first = null;
+            this.last = null;
+            this.length = 0;
+        }
+        //there are more than 1 element, then start moving first pointer forward so that first element gets unreferenced to be handled by garbage collector from memory.
+        else
+        {
+            this.first = this.first.next;
+            this.length--;
+        }
+        return this;
+    }
+    peek()
+    {
+	    //return the first element
+        return this.first;
+    }
+    isEmpty()
+    {
+        return this.length === 0;
+    }
+}
+
+const queue = new Queue();
+queue.enqueue(10);
+queue.enqueue(15);
+queue.enqueue(20);
+queue.enqueue(21);
+queue.dequeue();
+queue.dequeue();
+queue.dequeue();
+queue.dequeue();
+console.log(queue);
+
+
+Stack implementation using Queue (Not a good solution due to shifting involved)
+-----------------------------------
+class Stack
+{
+    constructor()
+    {
+        this.data = [];
+    }
+    push(value)
+    {
+        this.data.push(value);
+        return this;
+    }
+    pop()
+    {
+        this.data.shift();
+        return this.data[0];
+    }
+    peek()
+    {
+        return this.data[0];
+    }
+    isEmpty()
+    {
+        return this.data.length === 0;
+    }
+}
+class Queue
+{
+    constructor()
+    {
+        this.stack = new Stack();
+        this.first = null;
+        this.last = null;
+        this.length = 0;
+    }
+    enqueue(value)
+    {
+        if(this.isEmpty())
+        {
+            this.stack.push(value);
+            this.first = this.stack.peek();
+            this.last = this.first;
+        }
+        else
+        {
+            //push value to stack
+            this.stack.push(value);
+            this.last = value;
+        }
+        this.length++;
+    }
+    dequeue()
+    {
+        if(this.isEmpty())
+        {
+            throw new Error('Queue is empty')
+        }
+        console.log('dequeued element: ', this.stack.peek())
+        this.first = this.stack.pop();
+        this.length--;
+    }
+    peek()
+    {
+	    //return the first element
+        return this.stack.peek();
+    }
+    isEmpty()
+    {
+        return this.stack.isEmpty();
+    }
+}
+
+const queue = new Queue();
+queue.enqueue('joy');
+queue.enqueue('matt');
+queue.enqueue('pavel');
+console.log(queue);
+queue.enqueue('samir');
+console.log(queue);
+queue.dequeue();
+console.log(queue);
+queue.dequeue();
+console.log(queue);
+queue.dequeue();
+console.log(queue);
+queue.dequeue();
+console.log(queue);
+
+Queue using stack: (Best approach)
+------------------------------------
+class QueueUsingStack // basically build a stack which does queue kind og work (FIFO). I just loved this: https://www.youtube.com/watch?v=3Et9MrMc02A
+{
+    constructor()
+    {
+        this.inputStack = []; //to make it work queue way, we need to invert the input stack so that our pop, peek() return first item.
+        this.invertedStack = [];//that is what being done here.
+    }
+    push(value)
+    {
+        this.inputStack.push(value); //push always to input stack/array.
+    }
+    pop() //when inverted/output array empty, then push all from input stack to output stack, then do pop, so we get the first item.
+    {
+        if(!this.invertedStack.length > 0)
+        {
+            if(this.inputStack.length === 0)
+            {
+                throw new Error('Queue is empty');
+            }
+            while(this.inputStack.length > 0)
+            {
+                this.invertedStack.push(this.inputStack.pop());
+            }
+        }
+        
+        return this.invertedStack.pop();
+    }
+    peek()
+    {
+        if(!this.invertedStack.length > 0)
+        {
+            while(this.inputStack.length > 0)
+            {
+                this.invertedStack.push(this.inputStack.pop());
+            }
+        }
+        
+        return this.invertedStack[this.invertedStack.length - 1];
+    }
+}
+
+const queue = new QueueUsingStack();
+queue.push(5);
+queue.push(10);
+queue.push(15);
+console.log(queue);
+
+console.log(queue.peek());
+queue.push(20);
+console.log(queue);
+console.log('peek: ', queue.peek());
+console.log('pop: ', queue.pop());
+console.log('pop: ', queue.pop());
+console.log('pop: ', queue.pop());
+console.log('pop: ', queue.pop());
+console.log(queue);
+
+
+Trees:
+-------
+	This is a hierarchical datastructure which has root, parent, child, siblings, leaf nodes to form it.
+	Even Linked List is a type of tree, but having linear path.
+	Arrays, Stacks, LinkedList, Queues are all Linear datastructures.
+	
+	O(log N) - basically it is base of 2, cutting the entire by half in each iteration. 
+	
+	for eg: log 8 = 2 to the power of what?? can give 8. so it is 3. 8 --> 4 --> 2 --> 1 (cutting by half);
+	
+	so, if there are 8 nodes/elements - we want to search for a node, basically we may need to traverse only 3 times to arrive at the element, 
+if at all it is a perfect binary tree like below;
+
+										1
+									   / \	
+									  2	  3
+									 / \ / \
+									4  5 6  7 
+											 \
+											  8
+											  
+		if I need to search for 8, I probably take 1 decision in each step to go to the particular direction and arrive at the element. 
+		not needed to check each and every 8 nodes existing.  here it would be 3 steps to find the 8. Hence it is Big O(log N).
+
+BST:
+----
+			has some rules - strictly utmost 2 children, right child is higher than root, left child is lesser than root in all levels.
+			https://visualgo.net/en/bst - BST animation.
+			Best for searching - O(log N) as name suggests.
+			For insertion - again O(log N) - needs to find where it needs to insert.
+			For deletion - again O(log N) - needs to locate the element to delete.
+		 Looks like there is some problem with this - that needs to be dealt in next chapter - Balanced vs Unbalanced BST.
+		 
+		 Balanced BST - its children are balanced in both left and right sides. helps to achieve O(log n) operation.
+		 Unbalanced BST - children are not balanced, and can cause linear structure, might go to O(n) operation as it becomes linear.
+		 Hence, try to make the Binary tree balanced to achieve the O(log n) efficiency.
+		 
+		 As already mentioned Binary tree has to be balanced to achieve the efficiency of O(log n), but to make the balanced tree
+		 we use something like 'AVL Tree' or 'Red/Black tree' which has algorithm to automatically rotate the tree nodes to make 
+		 the tree balanced. mostly we won't be writing logics to these rotation but use some libraries to perform this.
+		 use visualization from : https://www.cs.usfca.edu/~galles/visualization/RedBlack.html
+								  https://www.cs.usfca.edu/~galles/visualization/AVLtree.html
+								  https://visualgo.net/en/bst	
+								  
+		How to check if the tree is balanced or unbalanced?
+				When the difference between height of left subtree and right sub tree is not more than 1 level, then its balanced.
+			
+		Eg:
+				1
+			   / \
+			  2	  3 - at this node, lst height is 0 nodes, rst height is 2 nodes - hence diff: 2 which is > than 1, so unbalanced tree.
+			 	   \
+					4
+					 \
+					  5	
+
+BST implementation: (only insert) (to be honest, it is a good try.)
+--------------------
+class Node
+{
+    constructor(value)
+    {
+        this.left = null;
+        this.right = null;
+        this.value = value;
+    }
+}
+class BinarySearchTree
+{
+    constructor()
+    {
+        this.root = null;
+    }
+    insert(value)
+    {
+        const newNode = new Node(value);
+        //check if root is null, assign new node to root
+        if(this.root === null)
+        {
+            this.root = newNode;
+        }
+        //else check if we need to insert to left or right
+        else if(this.root.value > newNode.value)
+        {
+            //insert to left
+            //let parent = this.root;
+            this._insertToLeft(this.root, newNode);
+        }
+        else
+        {
+            //insert to right
+            this._insertToRight(this.root, newNode);
+        }
+    }
+    lookup()
+    {
+        
+    }
+    _insertToLeft(parent, newNode)
+    {
+        //check if current parent's left is null
+        if(parent.left === null)
+        {
+            parent.left = newNode;
+        }
+        //else check if need to go left or right, this time parent will be parent.left as we are in left side of prev parent.
+        else if(parent.left.value > newNode.value)
+        {
+            this._insertToLeft(parent.left, newNode);
+        }
+        else
+        {
+            this._insertToRight(parent.left, newNode)
+        }
+    }
+    _insertToRight(parent, newNode)
+    {
+        //check if current parent's right is null
+        if(parent.right === null)
+        {
+            parent.right = newNode;
+        }
+          //else check if need to go left or right, this time parent will be parent.right as we are in right side of prev parent.
+        else if(parent.right.value < newNode.value)
+        {
+            this._insertToRight(parent.right, newNode);
+        }
+        else
+        {
+            this._insertToLeft(parent.right, newNode)
+        }
+    }
+    //remove
+}
+const tree = new BinarySearchTree();
+tree.insert(9);
+tree.insert(4);
+tree.insert(20);
+tree.insert(1);
+tree.insert(6);
+tree.insert(15);
+tree.insert(170);
+//console.log(tree.root)
+console.log(tree.root.left)
+console.log(tree.root.right)
+console.log(tree.root.left.left)
+console.log(tree.root.left.right)
+console.log(tree.root.right.left)
+console.log(tree.root.right.right)
+
+
+remove:
+-----------
+	check if parent is the element to remove
+	else check if parent.left == value || parent.right == value
+	yes, while(parent != null)
+	
+Remove code (incomplete) still when deleting rootnode, we need to do bit of a logic to realign, but it was good to cover this far definitely.
+--------------------------	
+class Node
+{
+    constructor(value)
+    {
+        this.left = null;
+        this.right = null;
+        this.value = value;
+    }
+    
+}
+class BinarySearchTree
+{
+    constructor()
+    {
+        this.root = null;
+    }
+    insert(value)
+    {
+        const newNode = new Node(value);
+        if(this.root == null)
+        {
+            this.root = newNode;
+        }
+        else if(this.root.value > value)
+        {
+            this._insertToLeft(this.root, newNode);
+            //this.root.left = newNode;
+        }
+        else
+        {
+             this._insertToRight(this.root, newNode);
+            //this.root.right = newNode;
+        }
+    }
+    _insertToLeft(parent, newNode)
+    {
+        if(parent.left == null)
+        {
+            parent.left = newNode;
+        }
+        else if(parent.left.value > newNode.value)
+        {
+             this._insertToLeft(parent.left, newNode);
+        }
+        else
+        {
+             this._insertToRight(parent.left, newNode);
+        }
+    }
+    _insertToRight(parent, newNode)
+    {
+        if(parent.right == null)
+        {
+            parent.right = newNode;
+        }
+        else if(parent.right.value < newNode.value)
+        {
+             this._insertToRight(parent.right, newNode);
+        }
+        else
+        {
+             this._insertToLeft(parent.right, newNode);
+        }
+    }
+    
+    remove(value)
+    {
+        if(this.root == null)
+        {
+            throw new Error("No nodes found to remove");
+        }
+        let currentNode = this.root;
+        let parentNode = null;
+        let isLeft = false;
+        while(currentNode != null)
+        {
+         if(currentNode.value == value)
+         {
+             //remove current node
+             if(currentNode.right == null)
+             {
+                 if(!isLeft)
+                 {
+                    parentNode.right = null;
+                 }
+                 else
+                 {
+                    parentNode.left = null;
+                 }
+                 break;
+             }
+             else
+             {
+                 if(!isLeft)
+                 {
+                    parentNode.right = currentNode.right;
+                    parentNode.right.left = currentNode.left;
+                 }
+                 else
+                 {
+                    parentNode.left = currentNode.right;
+                    parentNode.left.left = currentNode.left;
+                 }
+                 break;
+             }
+         }
+         else if(currentNode.value > value)
+         {
+             //target node is in left
+              parentNode = currentNode;
+              currentNode = currentNode.left;
+              isLeft = true;
+         }
+         else
+         {
+             //target node is in right
+              parentNode = currentNode;
+              currentNode = currentNode.right;
+              isLeft = false;
+         }
+        }
+    }
+}
+const bst = new BinarySearchTree();
+bst.insert(9);
+bst.insert(5);
+bst.insert(11);
+bst.insert(12);
+bst.insert(7);
+bst.insert(4);
+bst.insert(8);
+bst.insert(10);
+console.log(JSON.stringify(traverse(bst.root)))
+
+function traverse(node)
+{
+	//check if node is empty
+    if(node === null) return "No nodes to traverse!!";
+	//get the parent value
+    const tree = {value: node.value}; 
+	//assign the left if its null, then null, else traverse that and fill its left and right.
+    tree.left = node.left === null ? null : traverse(node.left);
+	//assign the right if its null, then null, else traverse that and fill its left and right.
+    tree.right = node.right === null ? null : traverse(node.right);
+    return tree;
+}
+
+Binary Heap:
+-------------
+	Also a Binary tree with two nodes and parent child relationship, but here it is not as ordered as BST, because here there are 
+	two types. Max Heap and Min Heap. Heap Datastructure is not the same as Memory Heap.
+	--> Max heaps are its parent node is greater than both left and right nodes.
+	--> Min heaps are its parent node is lesser than both left and right nodes.
+	--> Here lookup would be O(n) as there is no order as in BST to split up, insert and delete would still be O(log n).
+			Since, here we dont do lookup for insert as we go root, left, right, keep inserting in this order, only when there
+			is higher priority associated withe new node, then we do the bubble up steps.
+						
+	Most useful in Priority Queues.
+	BST vs Binary Heap(Priority Queues)
+	BST - ordered, fast lookup, flexible size.
+	Priority queues - fast insert, flexible size, priority, slow lookup.
+	
+	
+Trie
+-----
+	Special kind of tree which helps in efficient searching for a string in a collection of strings.
+	it helps in prefix based search. But not much details provided. Mainly it outperforms most of the other 
+	datastructures.
+	
+Graphs:
+--------
+	Basically Linked List is a type of tree, tree is a type of Graph.
+	Graph consists of nodes and edges (connecting lines).
+	It is majorly used in areas where relationships has to be represented.(internet, friendships, family trees, etc.,)
+		--> Facebook use graphs for social networks, Amazon use for recommendations, Google uses for shortest path in Maps.
+	it is helpful in modelling real world relationships.
+	Different types of Graphs:
+		Directed - with arrows - Twitter, if you follow some profile.
+		UnDirected - bidirectional - Facebook friend request - one can send request, accepted both can see their updates.
+		Weighted - with some weighted values - helpful in Google maps to calculate shortest path.
+		Unweighted - without weighted
+		Cyclic - at some point, nodes form a circular/closed path. Common in weighted graphs.
+		Acyclic - do not form the circular/closed path.
+		
+		From interview perspective, graph related questions are very rare, but having the knowledge helps little bit.
+		With Graphs: Relationships can be represented easily, shortest path can be found, but scaling is very difficult due to its
+		complex nature.
+			Most often we will not create our own graph datastructure, but use tools like Neo4j
+		
+Graph Implementation:
+----------------------
+class Graph
+{
+    constructor()
+    {
+        this.numberOfNodes = 0;
+        this.adjacentList = {};
+    }
+    addVertex(node)
+    {
+        this.adjacentList[node] = []; //once vertex is created, we add an entry to adjacentList key.
+        this.numberOfNodes++;
+    }
+    addEdge(node1, node2)
+    {
+        if(!this.adjacentList[node1] || !this.adjacentList[node2])
+            throw new Error(`invalid nodes passed`);
+        //check if the node exists
+        this.adjacentList[node1].push(node2);//since it is undirected/bidirectional
+        this.adjacentList[node2].push(node1);
+    }
+}
+
+const myGraph = new Graph();
+myGraph.addVertex(0);
+myGraph.addVertex(1);
+myGraph.addVertex(2);
+myGraph.addVertex(3);
+myGraph.addVertex(4);
+myGraph.addVertex(5);
+myGraph.addVertex(6);
+myGraph.addEdge(0,1);
+myGraph.addEdge(0,2);
+myGraph.addEdge(1,2);
+myGraph.addEdge(1,3);
+myGraph.addEdge(2,4);
+myGraph.addEdge(3,4);
+myGraph.addEdge(4,5);
+myGraph.addEdge(5,6);
+console.log(myGraph);		
+	
+	
+Algorithms
+-----------
+		There are so much of algorithms, but in this we will see main algorithms that are focussed as part of interviews.
+		Basically steps/processes to perform some action.
+		----------------------------------------
+		 DataStructures + Algorithms = Programs
+		----------------------------------------
+			--> Sorting
+			--> Searching(BFS + DFS)
+			--> DP
+			--> Recursion (not algo, but concept used in most of the algorithm).
+
+Recursion:
+----------
+			-->  A function that calls itself recursively. 
+			--> When we need to perform some operation recursively, like searching for a node in tree, keep moving the nodes and we look for 
+			left and right, until we find the target node.
+			--> One Big problem we will face with recursion is Stack Overflow, when a function gets called recursively, it involves memory
+			as each function call stores in Call Stack (which takes memory from our computer), as we know memory is limited, if we don't 
+			have a way to pop the function call from stack, we will end up in Stack overflow and crash our program.
+		Base case:
+		----------	
+					Every recursive function must have a base case, which is the stop point for the recursion and stops calling the 
+					function again.
+	
+let counter = 0;
+function inception()
+{
+    if(counter > 3) //Identify the base case to stop the recursive call.
+    {
+        return 'Done!';
+    }
+    counter++;
+    return inception(); //this return statement to essentially bubble down the return response to the bottom of the stack to return to initial call of the function
+}
+
+console.log(inception()); //to get the response here, we need to two return statements in the recursion function, one is from base case, other is to return the response received from base case to final/initial call in this case as it is a stack.
+
+3 rules for recursive function:
+--------------------------------
+		--> Identify the base case
+		--> Identify the recursive case
+		--> Get closer and closer and return when needed, usually in recursion there will be two return statements.
+			
+		
+console.log('--------------Recursive----------------')
+function factorial(n)
+{
+    //n should be valid
+    //identify base case
+    //if(n==1) return 1; directly we can return two instead of 1, to avoid some recursive stack memory usage
+    if(n == 0) return 0;
+    if(n==2) return 2;
+    
+    return n * factorial(n-1);
+}
+
+console.log(factorial(10));
+console.log('--------------Iterative----------------')
+let answer = 1;
+function factorialIterative(n)
+{
+    if(n==0) return 0;
+    if(n == 2) return 2;//provides some reduction in loops.
+    for(let i=2; i<=n; i++)
+    {
+        answer = answer * i;
+    }
+    return answer;
+}
+
+console.log(factorialIterative(10));
+
+factorialIterative(0)
+
+---------------------------------------------
+Fibonacci Recursion and Iterative
+---------------------------------------------
+function fiboRecursion(n) // its Big O is O(2^n) - grows exponentially as it has to do a lot of function calls as for fibo(6) - fibo(5) + fibo(4)//but if you notice fibo(4) already being done as part of fibo(5), for each increment in 'n', tree size grows bigger exponentially.
+{
+    //fibonacci series - 0,1,1,2,3,5,8,13,21,34,55
+    //base case
+    if(n==0) return 0;
+    if(n==1 || n==2) return 1;
+    
+    return fiboRecursion(n-1) + fiboRecursion(n-2);
+}
+
+console.log(fiboRecursion(8));
+
+This exponential time complexity in Recursion can be solved with help of Dynamic Programming.
+
+function fiboIterative(n) //its Big O - O(n).
+{
+   let ans = [];
+   ans[0] = 0;
+   ans[1] = 1;
+   ans[2] = 1
+    
+   for(let i=3;i<=n; i++)
+   {
+       ans[i] = ans[i-1] + ans[i-2];
+   }
+
+   return ans[n];
+}
+
+console.log(fiboIterative(8));
+------------------------------------------------------------------------------------------------
+
+Recursion vs Iterative
+-----------------------
+Recursion - more readable, more helpful for traversing trees, graphs, but utilizes extra memory space
+			--> helps in DRY principle.
+Loops - almost all done by recursion can be done by loops as well, most of the times not readable as easy as recursion,
+		for traversing trees it needs to use extra stack or something like that, it won't be as easy as done in recursion.
+	
+When to use recursion?
+-----------------------
+		--> Every time when using a tree or converting something to a tree, consider recursion.
+		--> if a problem can be divided to sub problems that are instances of the same problem. like fibonacci/factorial etc.,
+				--> each instance of subproblem identical in nature. (the calculations that we need to do in each small instance are same and we do it over and over and over again until we hit the base case).
+				--> solutions to each subproblem can be combined to solve the problem at hand.
+			
+			Basically DIVIDE and CONQUER using Recursion.
+			Recursion and Space Complexity are not friends.
+			
+		Mostly useful for Merge Sort, Quick Sort, Tree Traversal, Graph Traversal.
+		
+-------------------------------------------
+REVERSE STRING using iterative or recursive
+-------------------------------------------	
+	
+function reverseString(str) {
+    let revString = '';
+    for(let i=str.length-1;i>=0;i--)
+    {
+        revString = revString + str[i];
+    }
+    return revString;
+}
+
+console.log(reverseString("yoyo master"));
+
+let revString = '';
+function reverseStringUsingRecursion(str) {
+ //base case
+ if(str.length === 1) return str;
+ //recursive case
+ return reverseStringUsingRecursion(str.slice(1)) + str[0];
+}
+
+console.log(reverseStringUsingRecursion("yoyo master"));			
+	
+		
+SORTING:
+--------
+	There are so many sorting algorithms available. We will focus some of the most asked / important algorithms in these sessions.
+		=> Bubble Sort    (bubbling up the maximum number to the right) 
+		=> Insertion Sort
+		=> Selection Sort (selecting the minimum keep swapping)
+		=> Merge Sort
+	   	=> Quick Sort
+	We will also look at the tradeoffs between these to choose between these based on our needs / problems.
+	
+	There are some issues with predefined sort, it may not work for all the inputs as expected as each language might have some different 
+	implementation, we will have to go through its documentation to understand it better.
+	
+Simple Sort with prebuilt method:
+----------------------------------	
+const arr = ['a','s','d','r','t'];
+console.log(arr);
+arr.sort() //But when the array size keeps increasing, we may need to have a custom sort logic, thats the reason this is being part of the interviews.
+console.log(arr);	
+-------------------------------------
+
+For Integer Sorting;
+-----------------------
+const arr = ['a','s','d','r','t'];
+const arrNum = [1,85,76,8]; 
+console.log(arrNum.sort());//this does not work, if we don't provide compareFn, it considers unicode and compare the characters and return accordingly.
+
+console.log(arrNum.sort(function(a,b)
+{
+    return a-b;
+}))
+
+			Check this - https://www.toptal.com/developers/sorting-algorithms - visualization to see which works better.
+			
+	Elementary level sorting algos
+	---------------------------------	
+		-> Bubble Sort
+		-> Insertion Sort
+		-> Selection Sort
+		
+	Most efficient ones:
+		-> Quick Sort
+		-> Merge Sort
+		
+	We will start off with Bubble Sort:
+		-> Bubbling up the largest to the end, keep iterating the elements until we don't have any largest element at the front.
+		
+	
+Bubble Sort Implementation: O(n^2) - nested loops.
+-------------------------------------	
+const arrNum = [99,44,6,2,1,5,63,87,283,4,0,3,45,32,18]; 
+
+function bubbleSort(arr)
+{
+    for(let i = 0; i < arr.length; i++)
+    {
+      for(let j = 0; j < arr.length && j+1 < arr.length; j++)
+      {
+          if(arr[j] > arr[j+1])
+          {
+              //swap numbers
+              let temp = arr[j];
+              arr[j] = arr[j+1];
+              arr[j+1] = temp;
+          }
+      }
+    }
+}
+
+bubbleSort(arrNum);
+console.log(arrNum);
+
+Bubble Sort in C#
+------------------
+// Online C# Editor for free
+// Write, Edit and Run your C# code using C# Online Compiler
+
+using System;
+
+public class HelloWorld
+{
+    public static void Main(string[] args)
+    {
+        int[] arr = {99,44,6,2,1,5,63,87,283,4,0,3,45,32,18};
+  
+       // SelectionSort(arr);
+        BubbleSort(arr);
+        Console.WriteLine("\n");
+        Display(arr);
+    }
+    public static void BubbleSort(int[] arr)
+    {
+        //find max and keep swapping to rightmost
+        for(int i=0; i<arr.Length-1;i++)
+        {
+            for(int j=i+1; j < arr.Length; j++)
+            {
+                if(arr[i] > arr[j])
+                {
+                    int temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp; 
+                }
+            }
+            
+        }
+    }
+    public static void Display(int[] arr)
+    {
+        foreach(int i in arr)
+        {
+            Console.Write(i + " ");
+        }
+    }
+}
+
+Selection Sort Implementation
+------------------------------
+const arrNum = [99,44,6,2,1,5,63,87,283,4,0,3,45,32,18]; 
+
+function selectionSort(arr)
+{
+    for(let i = 0; i < arr.length; i++)
+    {
+      let smallIdx = i;
+      for(let j = i+1; j < arr.length; j++)
+      {
+          //find the smallest
+          if(arr[smallIdx] > arr[j])
+          {
+              smallIdx = j;
+          }
+      }
+      //once smallest index is found, now swap it with arr[i]
+      let temp = arr[i];
+      arr[i] = arr[smallIdx];
+      arr[smallIdx] = temp;
+    }
+}
+
+selectionSort(arrNum);
+console.log(arrNum);
+
+Selection Sort in C#
+---------------------
+// Online C# Editor for free
+// Write, Edit and Run your C# code using C# Online Compiler
+
+using System;
+
+public class HelloWorld
+{
+    public static void Main(string[] args)
+    {
+        int[] arr = {99,44,6,2,1,5,63,87,283,4,0,3,45,32,18};
+  
+        SelectionSort(arr);
+        Console.WriteLine("\n");
+        Display(arr);
+    }
+    public static void SelectionSort(int[] arr)
+    {
+        //select min and swap for all the elements
+        for(int i=0; i<arr.Length-1;i++)
+        {
+            int minIdx = i;
+            for(int j=i+1; j < arr.Length; j++)
+            {
+                if(arr[j] < arr[minIdx])
+                {
+                    minIdx = j;
+                }
+            }
+            int temp = arr[i];
+            arr[i] = arr[minIdx];
+            arr[minIdx] = temp;
+        }
+    }
+    public static void Display(int[] arr)
+    {
+        foreach(int i in arr)
+        {
+            Console.Write(i + " ");
+        }
+    }
+}
+
+Insertion Sort Implementation:
+------------------------------
+// Online C# Editor for free
+// Write, Edit and Run your C# code using C# Online Compiler
+
+using System;
+
+public class HelloWorld
+{
+    public static void Main(string[] args)
+    {
+        int[] arr = {99,44,6,2,1,5,63,87,283,4,0,3,45,32,18};
+        InsertionSort(arr);
+        Display(arr);
+    }
+    public static void InsertionSort(int[] arr)
+    {
+        //take each element and put in its correct position in the left
+        for(int i = 0;i<arr.Length;i++)
+        {
+           int j = i;
+           while(j>0 && arr[j] < arr[j-1])//with sorted array, this loop does not run even once, hence in best case it is O(n)
+           {
+                int temp = arr[j];
+                arr[j] = arr[j-1];
+                arr[j-1] = temp;
+                j--;
+            }
+        }
+    }
+    
+    public static void Display(int[] arr)
+    {
+        foreach(int i in arr)
+        {
+            Console.Write(i + " ");
+        }
+    }
+}
+
+Merge Sort Implementation:
+----------------------------
+using System;
+using System.Collections;
+
+public class HelloWorld
+{
+    public static void Main(string[] args)
+    {
+        int[] arr = {99,44,6,2,1,5,63,87,283,4,0,3,45,32,18};
+        MergeSort(arr, 0, arr.Length-1);
+        Display(arr);
+    }
+    public static void MergeSort(int[] arr, int low, int high)
+    {
+        if(low == high) return;
+        //calculate mid to divide two parts
+        int midIdx = (low + high) / 2;
+        //so first part would be [low...midIdx]
+        //second would be [midIdx+1...high]
+        MergeSort(arr, low, midIdx);//first part
+        MergeSort(arr, midIdx+1, high);//second part
+        
+        Merge(arr, low, midIdx, high);
+    }
+    
+    public static void Merge(int[] arr, int low, int mid, int high)
+    {
+        int[] temp = new int[arr.Length];
+        int left = low;//where left arr starts
+        int right = mid + 1;//where right arr starts
+        int x=0;
+        while(left <= mid && right <= high)
+        {
+            if(arr[left] <= arr[right])
+            {
+                temp[x] = arr[left];
+                left++;
+                x++;
+            }
+            else
+            {
+                temp[x] = arr[right];
+                right++;
+                x++;
+            }
+        }
+        while(left <= mid)
+        {
+            temp[x] = arr[left];
+            left++;
+            x++;
+        }
+        while(right <= high)
+        {
+            temp[x] = arr[right];
+            right++;
+            x++;
+        }
+        for(int i=low; i<=high;i++)
+        {
+		//always temp will be from '0'
+           arr[i] = temp[i-low];
+        }
+    }
+    
+    public static void Display(int[] arr)
+    {
+        foreach(int i in arr)
+        {
+            Console.Write(i + " ");
+        }
+    }
+}
+
+Quick Sort Implementation
+--------------------------
+using System;
+using System.Collections;
+
+public class HelloWorld
+{
+    public static void Main(string[] args)
+    {
+        int[] arr = {99,44,6,2,1,5,63,87,283,4,0,3,45,32,18};
+        QuickSort(arr, 0, arr.Length-1);
+        Display(arr);
+    }
+    public static void QuickSort(int[] arr, int low, int high)
+    {
+        if(low < high)
+        {
+             //Console.Write("low: {0} high: {1}", low, high);
+        //get the pivoted index to do partition and do quick sort for that dataset
+        int partitionIdx = Partition(arr, low, high);
+        //Console.WriteLine("partition index: " + partitionIdx);
+        QuickSort(arr, low, partitionIdx - 1);//first part
+        QuickSort(arr, partitionIdx+1, high);//second part
+        }
+    }
+    
+    public static int Partition(int[] arr, int low, int high)
+    {
+        int i = low;
+        int j = high;
+        int pvt = low;
+        while(i < j)
+        {
+           while(arr[pvt] >= arr[i] && i<=high-1)//since if we have high, then its doing one more i++ which is causing index out of bounds issue.
+           {
+               i++;
+           }
+           while(arr[pvt] <= arr[j] && j>=low+1)
+           {
+               j--;
+           }
+           if(i < j)
+           {
+               Swap(arr, i, j);
+           }
+           Swap(arr, pvt, j);
+        }
+        return j;
+    }
+    public static void Swap(int[] arr, int i, int j)
+    {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+     
+    
+    public static void Display(int[] arr)
+    {
+        foreach(int i in arr)
+        {
+            Console.Write(i + " ");
+        }
+    }
+}
+
+
+Selection Sort vs Bubble Sort vs Insertion Sort
+-------------------------------------------------
+	Bubble - bubbles up the max element to farther right on each loop. With Best case (sorted array as input) - O(n).
+		   - Time complexity O(n^2) - uses nested loops.
+		   - space complexity - O(1) - no extra space.
+	
+	Selection - find the minimum element and swap it from left most on each loop.
+		      - Time complexity O(n^2) - uses nested loops. (in all the best, average, worst case it is O(n^2).
+		      - space complexity - O(1) - no extra space. 
+			  
+	Insertion - take each element and put in its correct position to the left.
+			  - for each element, look for its position by looping left side elements and keep swapping until its left < element.
+			  - Time complexity O(n^2) - uses nested loops. (in all the best O(n), average, worst case it is O(n^2).
+		      - space complexity - O(1) - no extra space. 
+			  For nearly sorted data sets or less data set - most possibly insertion sort works well.
+			  
+	Merge Sort - Divide and Conquer approach / Divide and Merge 
+			   - Keep dividing the data sets two parts until it can
+			   - then start comparing the two to order it and put in temp array
+			   - once ordering is done, put in the original array
+			   keep doing this recursively for both divided parts.
+			   
+		This dividing of data array using indexes (low, mid, high) see above code.
+		Time compexity = dividing array by half(n/2=> n/2=>n/2....) O(n log n)  even in best,avg,worst - same O(n log n);	
+		Space complexity = O(n) - temp array.
+		
+	Quick Sort - This also uses Divide and Conquer, but little different than Merge Sort.
+				- it picks a pivot and try to put it in the correct position of the array.
+				- for placing it in correct position, it use two pointer one from left and another from right
+					it loops through array, from left it increments i until it finds an element > pivot, since it should be in right side.
+				from right side, it decrements j until it finds an element < pivot.
+					once it finds, if (i < j) then swap the elements, if 'j' crossed 'i' -> then element is in correct side should not be 
+					swapped to the right side.
+				- once done placing the pivot in its correct index - then that is the partition index, split the left array and right array
+				left array - low...partIndex-1, right - partIndex+1...high.
+				
+			Time Complexity: O(n log n); as it keeps dividing.
+			Space Complexity: O(1) - no extra space.	
+			
+			
+			  
+ So which is best sort? - it is clearly merge sort and quick sort outperforms other sorting techniques.
+						- Clearly BubbleSort and Selection Sort we are not going to use anymore as it is O(n^2) in most of the cases.
+						- InsertionSort is little bit better and can be used when the less data needs to be sorted/nearly sorted arrays.
+						
+			Is it possible to beat O(n log n) -> only mathematically possible, not in practical.
+					--> as always we need to compare each number with other numbers.
+					--> there are sorts like Radix and Counting Sort - which use Non Comparison sort, but it does work only for fixed set of 
+					integers, unlike merge / quick sort works for any type of data.
+					
+Which sort to be used for below scenarios?
+		1. Sort 10 schools around your house by distance. - 
+				-> since it is less data, may be InsertionSort can be used.
+		2. eBay sorts listings by current Bid amount.
+				-> may be merge / quick - quick has space complexity O(1), merge has space complexity O(n).
+				-> may be merge sort in random guess.
+				-> he suggested radix or counting sort as the bid amount is going to be integer mostly in range or 1$ to 100$.
+		3. Sort scores on ESPN 
+				-> no details if it can have so much of data, year's data, one day's data.
+				-> again merge sort.
+				-> he suggested quick sort as due to space complexity. as it can have more sports and more number of scores.
+		4. Massive database (can't fit all into memory) needs to sort through past year's user data.
+				-> this time it is clearly mentioned, there is a issue with memory, hence it should be quick sort.
+				-> he suggested use merge sort as in all cases, it is going to have O(n log n), as the sorting needs to be done out of
+				memory, since the data is more, he worries about performance as well, as Quick sort in worst case can cause O(n^2) which is really bad.
+		5. Almost sorted Udemy review data needs to update and 2 new reviews.
+				-> since it almost sorted, InsertionSort.
+		6. Temperature records for the past 50 years in Canada.
+				-> merge or quick sort.
+				-> he says if there are not going to be decimal points in the data, mostly if it is 20 to 40 - Radix or Counting Sort.
+				-> But if there is decimal points then Radix or Counting sort cannot be used. then he also says as below.
+				-> since 50 years of data, most probably memory of data is more, hence I believe Quick Sort.
+		7. Large user name database needs to be sorted. Data is very random.
+				-> Since it is very random, pick a pivot and try to put in its correct position might work.
+				-> Hence Quick sort.
+		8. 	You want to teach sorting for the first time - 
+				-> Bubble or Selection Sort.
+				
+	Pre built Sort method - we can try to find what sort algorithm it is used underneath.
+						in C# - Array.Sort(arr) - uses hybrid sorting algorithm 
+						(if less than 16 elements - InsertionSort, Heap Sort, otherwise Quick Sort).
+						
+Searching (BFS + DFS)
+=====================
+		Searching is most widely used in real time apps, as we search through google, facebook, twitter, youtube in all the useable
+websites we use searching. And by now it should be clear the search has to be really efficient otherwise it is not going to be helpful
+for the user.
+			Different Types of Searching:
+			------------------------------
+				-> Linear (using loops to go one by one to find the target element) O(n)
+				-> Binary Search (if its sorted, then it can be done by Divide and Conquer approach, by picking middle element, compare the target element and go left or right to search for - O(log n) )
+				-> Depth First Search
+				-> Breadth First Search	
+				
+		BFS + DFS => techniques to traverse graph or tree helps us to visit each node O(n).
+		
+Some interview questions/knowledge questions:
+---------------------------------------------
+	=> If you know a solution is not far from the root of the tree	
+			-> May be DFS, since extra space complexity involved in BFS.
+			-> Nope, he suggested it is BFS.
+	=> If the tree is very deep and solutions are rare.
+			-> Then may be BFS is better, since it is deep, going each one by one may take long time as its deep. (same he suggested).
+	=> If the tree is very wide. (may not a proper binary tree, has multiple child nodes)
+			-> still its better to use BFS I think as we don't know how deep the target node is.
+			-> he says DFS (because BFS might need too much of a memory to store all the child nodes to track)
+	=> If solutions are frequent but located deep in the tree:
+			-> I don't know why I still feel BFS is better
+			-> he says since it is frequent - DFS would be better than BFS.
+	=> determining whether a path exists between two nodes:
+			-> ???
+			-> DFS is basically built for this purpose.
+	=> Finding the shortest path
+			-> ???
+			-> BFS is meant for this.
+		
+	DFS is done with the help of three ways of traversing a tree - Pre, Post, In order traversals.
+		Pre - helps in recreating the tree structure.
+		In - helps in ordering the tree elements
+		Post - does read left child, right child then its parent.
+	
+	DFS
+	----
+		--> As same as BFS here also there is a data structure used which is stack in the form of call stack. so memory consumption 
+would be O(height of tree).		
+
+BFS vs DFS 
+-----------
+	BFS - use more memory than DFS, best for finding shortest path. as for a node, it checks all the connected nodes so it can easily find the shortest path.
+		-> Well, we have seen that for finding shortest path between nodes, BFS is used, but if in case the edges are weighted (weighted graph),
+		then we need to use something else, that is Dijkstra's Algorithm or Bellman-Ford Algorithm.
+		-> Bellman-Ford - is useful when the weights are having negative values, but has worst case Time complexity of O(n^2).
+		-> Dijkstra - is useful when the weights have only positive values, and little bit more efficient than Bellman-Ford algorithm.
+	
+	DFS - use less memory than BFS, best for finding if the path does exist, but one downside, if the tree goes deep, then it can become slow due to excessive recursive calls.
+	
+		
+		
+BreadthFirstSearch :
+========================
+class Node
+{
+    constructor(value)
+    {
+        this.left = null;
+        this.right = null;
+        this.value = value;
+    }
+    
+}
+class BinarySearchTree
+{
+    constructor()
+    {
+        this.root = null;
+    }
+    insert(value)
+    {
+        const newNode = new Node(value);
+        if(this.root == null)
+        {
+            this.root = newNode;
+        }
+        else if(this.root.value > value)
+        {
+            this._insertToLeft(this.root, newNode);
+            //this.root.left = newNode;
+        }
+        else
+        {
+             this._insertToRight(this.root, newNode);
+            //this.root.right = newNode;
+        }
+    }
+    _insertToLeft(parent, newNode)
+    {
+        if(parent.left == null)
+        {
+            parent.left = newNode;
+        }
+        else if(parent.left.value > newNode.value)
+        {
+             this._insertToLeft(parent.left, newNode);
+        }
+        else
+        {
+             this._insertToRight(parent.left, newNode);
+        }
+    }
+    _insertToRight(parent, newNode)
+    {
+        if(parent.right == null)
+        {
+            parent.right = newNode;
+        }
+        else if(parent.right.value < newNode.value)
+        {
+             this._insertToRight(parent.right, newNode);
+        }
+        else
+        {
+             this._insertToLeft(parent.right, newNode);
+        }
+    }
+    
+    remove(value)
+    {
+        if(this.root == null)
+        {
+            throw new Error("No nodes found to remove");
+        }
+        let currentNode = this.root;
+        let parentNode = null;
+        let isLeft = false;
+        while(currentNode != null)
+        {
+         if(currentNode.value == value)
+         {
+             //remove current node
+             if(currentNode.right == null)
+             {
+                 if(!isLeft)
+                 {
+                    parentNode.right = null;
+                 }
+                 else
+                 {
+                    parentNode.left = null;
+                 }
+                 break;
+             }
+             else
+             {
+                 if(!isLeft)
+                 {
+                    parentNode.right = currentNode.right;
+                    parentNode.right.left = currentNode.left;
+                 }
+                 else
+                 {
+                    parentNode.left = currentNode.right;
+                    parentNode.left.left = currentNode.left;
+                 }
+                 break;
+             }
+         }
+         else if(currentNode.value > value)
+         {
+             //target node is in left
+              parentNode = currentNode;
+              currentNode = currentNode.left;
+              isLeft = true;
+         }
+         else
+         {
+             //target node is in right
+              parentNode = currentNode;
+              currentNode = currentNode.right;
+              isLeft = false;
+         }
+        }
+    }
+    breadthFirstSearch()
+    {
+        let currentNode = this.root;
+        let result = [];
+        let queue = [];
+        queue.push(this.root);
+        while(queue.length > 0)
+        {
+            let node = queue.shift();
+            //console.log('node: ', node);
+            result.push(node.value);
+            if(node.left)
+            {
+                queue.push(node.left);
+            }
+            if(node.right)
+            {
+                queue.push(node.right);
+            }
+        }
+        return result;
+    }
+}
+const bst = new BinarySearchTree();
+bst.insert(9);
+bst.insert(5);
+bst.insert(11);
+bst.insert(12);
+bst.insert(7);
+bst.insert(4);
+bst.insert(8);
+bst.insert(10);
+console.log(JSON.stringify(traverse(bst.root)))
+console.log('---------------------------------------')
+console.log(bst.breadthFirstSearch());
+function traverse(node)
+{
+	//check if node is empty
+    if(node === null) return "No nodes to traverse!!";
+	//get the parent value
+    const tree = {value: node.value}; 
+	//assign the left if its null, then null, else traverse that and fill its left and right.
+    tree.left = node.left === null ? null : traverse(node.left);
+	//assign the right if its null, then null, else traverse that and fill its left and right.
+    tree.right = node.right === null ? null : traverse(node.right);
+    return tree;
+}		
+		
+Using Recursive approach:
+-------------------------
+breadthFirstSearchUsingRecursive(queue, result)
+{
+    if(queue.length > 0)
+    {
+        let node = queue.shift();
+        result.push(node.value);
+        
+        if(node.left)
+        {
+            queue.push(node.left);
+        }
+        if(node.right)
+        {
+            queue.push(node.right);
+        }
+        this.breadthFirstSearchUsingRecursive(queue, result);
+    }
+    
+    return result;
+}
+
+
+With DFS in,pre, post order code added:
+----------------------------------------
+class Node
+{
+    constructor(value)
+    {
+        this.left = null;
+        this.right = null;
+        this.value = value;
+    }
+    
+}
+class BinarySearchTree
+{
+    constructor()
+    {
+        this.root = null;
+    }
+    insert(value)
+    {
+        const newNode = new Node(value);
+        if(this.root == null)
+        {
+            this.root = newNode;
+        }
+        else if(this.root.value > value)
+        {
+            this._insertToLeft(this.root, newNode);
+            //this.root.left = newNode;
+        }
+        else
+        {
+             this._insertToRight(this.root, newNode);
+            //this.root.right = newNode;
+        }
+    }
+    _insertToLeft(parent, newNode)
+    {
+        if(parent.left == null)
+        {
+            parent.left = newNode;
+        }
+        else if(parent.left.value > newNode.value)
+        {
+             this._insertToLeft(parent.left, newNode);
+        }
+        else
+        {
+             this._insertToRight(parent.left, newNode);
+        }
+    }
+    _insertToRight(parent, newNode)
+    {
+        if(parent.right == null)
+        {
+            parent.right = newNode;
+        }
+        else if(parent.right.value < newNode.value)
+        {
+             this._insertToRight(parent.right, newNode);
+        }
+        else
+        {
+             this._insertToLeft(parent.right, newNode);
+        }
+    }
+    
+    remove(value)
+    {
+        if(this.root == null)
+        {
+            throw new Error("No nodes found to remove");
+        }
+        let currentNode = this.root;
+        let parentNode = null;
+        let isLeft = false;
+        while(currentNode != null)
+        {
+         if(currentNode.value == value)
+         {
+             //remove current node
+             if(currentNode.right == null)
+             {
+                 if(!isLeft)
+                 {
+                    parentNode.right = null;
+                 }
+                 else
+                 {
+                    parentNode.left = null;
+                 }
+                 break;
+             }
+             else
+             {
+                 if(!isLeft)
+                 {
+                    parentNode.right = currentNode.right;
+                    parentNode.right.left = currentNode.left;
+                 }
+                 else
+                 {
+                    parentNode.left = currentNode.right;
+                    parentNode.left.left = currentNode.left;
+                 }
+                 break;
+             }
+         }
+         else if(currentNode.value > value)
+         {
+             //target node is in left
+              parentNode = currentNode;
+              currentNode = currentNode.left;
+              isLeft = true;
+         }
+         else
+         {
+             //target node is in right
+              parentNode = currentNode;
+              currentNode = currentNode.right;
+              isLeft = false;
+         }
+        }
+    }
+    breadthFirstSearch()
+    {
+        let currentNode = this.root;
+        let result = [];
+        let queue = [];
+        queue.push(this.root);
+        while(queue.length > 0)
+        {
+            let node = queue.shift();
+            //console.log('node: ', node);
+            result.push(node.value);
+            if(node.left)
+            {
+                queue.push(node.left);
+            }
+            if(node.right)
+            {
+                queue.push(node.right);
+            }
+        }
+        return result;
+    }
+    traverseInOrder(node, outputList)
+    {
+        if(node.left)
+        {
+            this.traverseInOrder(node.left, outputList);
+        }
+        outputList.push(node.value);
+        if(node.right)
+        {
+            this.traverseInOrder(node.right, outputList);
+        }
+        
+        return outputList;
+    }
+   traversePreOrder(node, outputList)
+    {
+         outputList.push(node.value);
+        if(node.left)
+        {
+            this.traversePreOrder(node.left, outputList);
+        }
+       
+        if(node.right)
+        {
+            this.traversePreOrder(node.right, outputList);
+        }
+        
+        return outputList;
+    }
+    
+    traversePostOrder(node, outputList)
+    {
+        if(node.left)
+        {
+            this.traversePostOrder(node.left, outputList);
+        }
+        if(node.right)
+        {
+            this.traversePostOrder(node.right, outputList);
+        }
+        outputList.push(node.value);
+        
+        return outputList;
+    }
+    depthFirstSearchInOrder()
+    {
+        return this.traverseInOrder(this.root, []);
+    }
+    depthFirstSearchPreOrder()
+    {
+        return this.traversePreOrder(this.root, []);
+    }
+    depthFirstSearchPostOrder()
+    {
+        return this.traversePostOrder(this.root, []);
+    }
+}
+const bst = new BinarySearchTree();
+bst.insert(9);
+bst.insert(5);
+bst.insert(11);
+bst.insert(4);
+bst.insert(8);
+bst.insert(10);
+bst.insert(12);
+console.log(JSON.stringify(traverse(bst.root)))
+console.log('---------------------------------------')
+console.log(bst.breadthFirstSearch());
+console.log(bst.depthFirstSearchInOrder());
+console.log(bst.depthFirstSearchPreOrder());
+console.log(bst.depthFirstSearchPostOrder());
+function traverse(node)
+{
+	//check if node is empty
+    if(node === null) return "No nodes to traverse!!";
+	//get the parent value
+    const tree = {value: node.value}; 
+	//assign the left if its null, then null, else traverse that and fill its left and right.
+    tree.left = node.left === null ? null : traverse(node.left);
+	//assign the right if its null, then null, else traverse that and fill its left and right.
+    tree.right = node.right === null ? null : traverse(node.right);
+    return tree;
+}	
+
+IsValidBST: (but failing some of the test cases)
+-------------	
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    public bool IsValidBST(TreeNode root) {
+       
+        return checkIfValid(root);
+    }
+    public bool checkIfValid(TreeNode node)
+    {
+        if(node == null) return true;
+        Queue<TreeNode> queue = new Queue<TreeNode>();
+        queue.Enqueue(node);
+        var node1 = queue.Dequeue();
+        if(node1.left != null && node1.left.val >= node1.val)
+        {
+            return false;
+        }
+        if(node1.right != null && node1.right.val <= node1.val)
+        {
+            return false;
+        }
+        return (checkIfValid(node1.left) && checkIfValid(node1.right));
+    }
+   
+}
+
+Dynamic Programming:
+-----------------------
+	--> Mainly a optimization technique to improve performance.
+	--> uses a caching technique named MEMOIZATION to store the value/solution of a sub problem involved and 
+	when the next time same sub problem is called, it does not calculate again and return from cache.
+	--> it uses parameters to cache the result.
+	
+MEMOIZATION:
+------------
+Check this below program:
+
+function AddTo80(n)
+{
+    console.log('long time')//suppose it is more time consuming operation.
+    return n+80;
+}
+
+console.log(AddTo80(5));
+console.log(AddTo80(5));
+console.log(AddTo80(5));		
+
+Optimization 1:
+----------------
+let cache = {}; //here is one problem since this object in global access might cause some issues as it is accessible outside.
+function AddTo80(n)
+{
+    if(n in cache)
+    {
+        return cache[n]
+    }
+    else
+    {
+        console.log('long time')//suppose it is more time consuming operation
+        cache[n] = n + 80;
+        return cache[n];
+    }
+}
+
+console.log(AddTo80(5));
+console.log(AddTo80(5));
+console.log(AddTo80(5));
+
+Optimization 2:
+----------------
+As called out in previous problem with global access, we can try closure (function has access to variables from outer function.)
+
+function AddTo80()
+{
+    let cache = {};
+    return function(n)//closure, function has access to variables from outside function
+    {
+        if(n in cache)
+        {
+            return cache[n]
+        }
+        else
+        {
+            console.log('long time')//suppose it is more time consuming     operation
+            cache[n] = n + 80;
+            return cache[n];
+        }
+    }
+}
+
+const memoized = AddTo80(); //return function.
+console.log(memoized(5));
+console.log(memoized(5));
+console.log(memoized(5));
+
+When to use Dynamic Programming?
+	-> When a problem can be divided in to subproblem?
+	-> Recursive solution for the problem
+	-> Are there any repetetive problems?
+	-> Memoize subproblem solution.
+	-> Demand a raise from your boss.
+	
+Fibonacci Memoized:
+--------------------
+//0,1,1,2,3,5,8,13,21,34,55,89,144,233...
+
+function fibonacci()
+{
+    let cache = {};
+    return function fib(n)
+    { 
+        if(n in cache)
+        {
+            return cache[n];
+        }
+        else
+        {
+            if(n < 2) return n;
+            cache[n] = fib(n-1) + fib(n-2);
+            return cache[n];
+        }
+    }
+}
+const fibMemoized = fibonacci();
+console.log(fibMemoized(70)); 
+
+With Memoized: Time complexity is O(n), still there is memory used here with call stack for each function calls.
+Without Memoization: Time complexity is O(2^n), Extra Space Complexity is O(n) for storing the calculated results.
+
+C#
+----
+using System;
+using System.Collections.Generic;
+
+public class HelloWorld
+{
+    public static void Main(string[] args)
+    {
+        //Console.WriteLine ("Hello Mono World");
+        Dictionary<int, int> memo = new Dictionary<int, int>();
+        Console.WriteLine(Fibonacci(50,memo));
+    }
+    public static int Fibonacci(int n, Dictionary<int,int> memo)
+    {
+        if(memo.ContainsKey(n))
+        {
+            return memo[n];
+        }
+        else
+        {
+           if(n < 2) 
+           {
+               memo[n] = n;
+               return memo[n];
+           }
+           
+           memo[n] = Fibonacci(n-1, memo) + Fibonacci(n-2, memo);
+           return memo[n];
+        }
+    }
+}
+
+BEST TIME TO BUY AND SELL STOCK
+----------------------------------
+O(n^2) approach
+-----------------
+public class Solution {
+    public int MaxProfit(int[] prices) {
+        int max = 0;
+        for(int i=0; i < prices.Length; i++)
+        {
+            for(int j=i+1;j<prices.Length;j++)
+            {
+                if(prices[j] > prices[i])
+                {
+                    int profit = prices[j] - prices[i];
+                    max = profit > max ? profit: max;
+                }
+            }
+        }
+
+        return max;
+    }
+}
+
+O(n) approach:
+---------------
+//keep looking for the minPrice, only do the calculation of profit when price[i] is greater than minPrice because thats where we are going to get the maximum profit.
+//it comes under DP because it keeps track of the minPrice - hence DP. TC - O(n), SC-O(1).
+
+public class Solution {
+    public int MaxProfit(int[] prices) {
+        int minPrice = prices[0];
+        int maxProfit = 0;
+        for(int i=1; i < prices.Length; i++)
+        {
+            //check if its less than prev minPrice
+            //if yes, update minPrice
+            //if no, calculate profit
+            //if currProfit > prev maxProfit, then update maxProfit
+            if(prices[i] < minPrice)
+            {
+                minPrice = prices[i];    
+            }
+            else
+            {
+               int currProfit = prices[i] - minPrice;
+               if(currProfit > maxProfit) 
+               {
+                   maxProfit = currProfit;
+               }
+            }
+        }
+
+        return maxProfit;
+    }
+}
+
+TOP Interview Questions on DSA:
+---------------------------------
+1. https://leetcode.com/problems/reverse-string/description/
+	->	Write a function that reverses a string. The input string is given as an array of characters s.
+	 
+2. https://leetcode.com/problems/fizz-buzz/description/	
+	-> Given an integer n, return a string array answer (1-indexed) where:
+
+			answer[i] == "FizzBuzz" if i is divisible by 3 and 5.
+			answer[i] == "Fizz" if i is divisible by 3.
+			answer[i] == "Buzz" if i is divisible by 5.
+			answer[i] == i (as a string) if none of the above conditions are true.
+			
+3. https://leetcode.com/problems/single-number/description/
+	-> Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.
+
+		You must implement a solution with a linear runtime complexity and use only constant extra space.
+
+	Eg: 
+	----
+		Input: nums = [2,2,1]
+		Output: 1
+				
+		Input: nums = [4,1,2,1,2]
+		Output: 4
+
+4. https://leetcode.com/problems/maximum-depth-of-binary-tree/description/	
+	-> Given the root of a binary tree, return its maximum depth.
+
+		A binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+			Input: root = [3,9,20,null,null,15,7]
+			Output: 3
+			
+5. https://leetcode.com/problems/move-zeroes/description/
+	-> Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.
+
+		Note that you must do this in-place without making a copy of the array.	
+
+Examples:
+----------
+		Input: nums = [0,1,0,3,12]
+		Output: [1,3,12,0,0]
+		
+		Input: nums = [0]
+		Output: [0]		
+		
+
+NON TECHNICAL INTERVIEWS:
+---------------------------
+HERO STORIES:
+--------------
+Technical - Success - Leadership - Challenge
+
+We will start off with our transition towards Support -> Developer
+Recent Performance issue challenge - 3 APIs, queries inside for loop, nHibernate configuration issue with respect to Batch size, without this it was firing hell lot of queries, I had to connect with DBAs with respect to Indexing, Execution Plans all those things helped a lot in learning 
+from probably almost 0 to atleast learnt so many things. finally we were able to improve it by 30 - 35% in all of the APIs with code changes
+as well as enabling compression at the server level.
+
+Also, we will say about scrum master roles, managing people, estimation, analysis, creating structure/stories for the next 3 months range
+for PI helping to understand the bigger picture of what we are going to do for next 3months.
+These are all challenges and learnings for me and definitely helped me to become a more better engineer, definitely there are lot of scopes / areas to improve I keep planning out that to learn and improve.
+
+Also we can say I had to implement a small console app for my time management, basically I scheduled it at morning 8.30, when I login, 		
+it runs and give me all the meetings, along with that it give me a mini notes kind of thing in notepad, where I keep things like reminder for 
+me what are all the things I need to start and make note of.
+
+It is not a big one, but helps me to start my day without much diversion in a structured way.
+
+Tell me about yourself:
+--------------------------
+	Hi, I am Gowthaman, I am currently working as Senior Technical Lead Role in HCL Software.
+	It is almost 10 years completed in IT, joined as fresher in Cognizant, initially was working in Support Role, Then I moved over 
+	to .Net Developer Role.
+	Through these I have been working .Net C#, Web API, Sql Server, from Front End side Javascript, Had some experience in React JS,
+	from Styling had worked in CSS and Bootstrap.
+	I also had chance to work as Scrum master role in last project and as well as managing and grooming junior folks.
+	
+	Yeah Thats in overall about me.
+	
+Tell me about an Interesting Project:
+-------------------------------------
+May be we can share about Org Hierarchy / Minor Rule screen to API conversion.
+
+Past Project:
+--------------
+		Currently working on the Workforce Management Product from Blueyonder. Mainly it is for managing schedules, time and attendance of 
+		labors for the Retail industry.
+		I am part of this project from 2020. It basically has 3 things, one is very old legacy app written in VB, one modern with .Net APIs and 
+		Ext Js, another being undergoing modernization to ReactJS.
+		
+		it involves C#, Web API, nHibernate ORM to connect with DB, Sql Server, for front end it uses ExtJS.
+		Have worked on multiple features, currently past 3, 4 months we are working on migrating completely the legacy screens to .Net APIs
+		to be consumed in current ExtJs as well as React JS UI.
+		
+		I have joined as developer had played scrum master role as well as senior developer role, as well as manage people and groom junior folks as well.
+
+Biggest Weakness:
+-----------------
+		My biggest weakness, I use to go scared when I see some new problem or some new fancy words in a project that initially bit tough to grasp,
+		and because of that my work gets affected and i go demotivated, but I am working on to not go afraid at once seeing a problem, 
+		try to go through 1 or 2 times again, note down the points that I understand, note down the assumptions that I have then from there
+		go deeper and split in to smaller things and think through then solve it one by one to get the clear picture and proceed with it.
+		
+Questions to ask interviewer?
+-------------------------------
+		-> So is this for any specific project? or we get hired and then get project interview calls?
+		-> Ok, may be this can help me as well what is that one thing that keeps you working in IT or in this company?
+		I may have some advice in that as well.	
+
+				https://github.com/viraptor/reverse-interview
+				
+Ending Interview on a strong note?
+------------------------------------
+		Thank you for your time, it was a good interaction had some good learnings. Hope I did not waste your time, have a good day.
+		May I know how much time it may take to receive a feedback, that would help to plan myself.	
+		Once again thanks a lot.
+		
+Handling Offers and Negotiation:
+---------------------------------
+	Once you receive offer check the offer and thank them for the offer, and ask them for the time to discuss with family/dependent or think through if this feels right to accept the offer.
+	Let them know if there is any other interview or offer in process, and inform them the same to take the right decision.
+	
+	When handling multiple offers:
+	------------------------------
+		-> Let both the companies inform the other offer and let them know for negotiation.
+		-> When deciding, think if the job role gives more challenging and upskilling opportunity.
+		-> Any ways you might want to stay in that company for a 3- 5 years, will there be growth.
+		-> if the persons/team around you be the smartest, that will help you to interact and grow excel your skills and push yourself.
+		-> then comes the salary / benefits -which includes rental/moving/health care expenses, cost of living as well, so not just look at the number.
+		-> Is your decision based on the desperation?.
+		
+Salary Range in Accenture for 10+ years:
+-----------------------------------------
+			https://www.ambitionbox.com/salaries/accenture-salaries/senior-soft-engineer?experience=10
+						
+						17.5L - to max of 25.8L
+						
+	So when they ask about expected salary - we can say,
+			So for my experience 10+ with this skill set, I have seen from online as well as from colleagues I see it is of around range from 
+			18 to 22Lakhs - I feel i should be around the high end range.
+			
+			
+			
+			
+			
+			
+			
+		
+		
