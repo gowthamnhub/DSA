@@ -127,6 +127,7 @@ public class Solution {
         return result;
     }
 }
+	TC: O(n) as we would be traversing the entire node, SC: O(1) still it takes call stack space. 
 
 5. https://leetcode.com/problems/move-zeroes/description/
 	-> Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.
@@ -143,8 +144,95 @@ Examples:
  	
 Intuition:
 -----------
-	Loop through each element with two pointers i with 0, j with 1;
-	we check if num[i] == 0 && num[j] != 0, then do swap i, j--
-	else, move only j++ to check next 	
+  #1. First I tried swapping 0 element with non zero to move all non zero to left.
+  #2. But there is another approach found from others solution.	
+		-> That is we are concerned about the non zero elements itself, so we loop through array and check if the element is not 0, we will insert it to left most (that is we should have another pointer to tell which is insert position) and another pointer to traverse and check if the element is not 0;
+		-> once the previous step is done, all the non - 0 elements would have come to left of the array and current
+		insert pointer would be some where in the middle, as "i" might have reached last element of array.
+		-> Then now whatever after "j" pointer we can make it 0 as non zero elements are moved to left already.
+
+See solution:
+--------------
+public class Solution {
+    public void MoveZeroes(int[] nums) {
+        int i=0; //traverse pointer
+        int j=0; //pointer to tell which position we need to insert
+
+        while(i < nums.Length) //O(n) as i pass from 0 to n.
+        {
+           if(nums[i] != 0)
+            {                
+                nums[j] = nums[i];
+                j++;
+            }
+            i++;
+        }
+        while(j < nums.Length) //j would be somewhere in middle, so O(n/2)
+        {
+            nums[j] = 0;
+            j++;
+        }
+    }
+}		
+	In total, TC: O(n), SC: O(1).
 	
+6. https://leetcode.com/problems/sum-of-two-integers/description/
+	Given two integers a and b, return the sum of the two integers without using the operators + and -.
 	
+		
+	Example 1:
+	----------	
+		Input: a = 1, b = 2
+		Output: 3
+		
+Solution:
+----------
+	As it is said we should not use + or -, we have to use bit wise operators to find out the sum.
+	When working out a sum, we know we will have two things, one is sum and carry, carry goes to one step left to add further.
+	Same thing applies here.
+	So basically, when a + b => carry + sum 
+	Example:
+	--------
+		A = 2 (0010), B = 7(0111)
+		Carry = 0010 (a&b)
+		Sum (a)= 0101 (a^b)
+		now b  = 0100 (Carry << 1)
+
+2nd step:
+---------
+		Carry  = 0100 (a&b)
+		Sum (a)= 0001 (a^b)
+		b 	   = 1000(carry << 1) 
+
+3rd step
+---------
+		Carry = 0000 (a&b)
+		sum(a)= 1001 (a^b)
+		 b 	  = 0000 (carry <<1)
+
+Now b == 0 => return a (1001) => 9		 
+	
+public class Solution {
+    public int GetSum(int a, int b) {
+        //check if b == 0 return a;
+        //find carry (a & b) this we need to calculate from notebook
+        //find "a xor b" a^b = sum
+        /* left shift carry by 1 bit, 
+        since always carry values go one value left(just plain 
+        normal addition carry) */
+
+        if(b == 0) return a;
+
+        while(b!=0)
+        {
+            int carry = a & b;
+            a = a ^ b;
+            b = carry << 1;
+        }
+        return a;
+    }
+}	
+7. https://leetcode.com/problems/reverse-linked-list/description/
+8. https://leetcode.com/problems/excel-sheet-column-number/description/
+9. https://leetcode.com/problems/majority-element/description/
+10. https://leetcode.com/problems/roman-to-integer/description/	
