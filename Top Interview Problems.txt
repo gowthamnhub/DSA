@@ -233,6 +233,56 @@ public class Solution {
     }
 }	
 7. https://leetcode.com/problems/reverse-linked-list/description/
+
+I/P: [1,2,3,4,5]; O/P: [5,4,3,2,1]
+I/P: []; O/P: []
+
+
+Iterative Approach:
+---------------------
+TC: O(n) SC: O(1) No extra space.
+
+public class Solution {
+    public ListNode ReverseList(ListNode head) {
+        ListNode curr = head;
+        ListNode prev = null;
+        if(curr == null) return null;
+
+        while(curr != null)
+        {
+            var next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        return prev;
+    }
+}
+
+Recursive Approach: 
+--------------------
+TC: O(n) SC: O(n)
+
+public class Solution {
+    public ListNode ReverseList(ListNode head) {
+        return ReverseNode(null, head);
+    }
+
+    public ListNode ReverseNode(ListNode prev, ListNode curr)
+    {
+        //base 
+        if(curr == null) return prev;
+
+         var next = curr.next;
+         curr.next = prev;
+         prev = curr;
+         curr = next;
+
+         return ReverseNode(prev, curr);
+    }
+}
+
 8. https://leetcode.com/problems/excel-sheet-column-number/description/
 9. https://leetcode.com/problems/majority-element/description/
 10. https://leetcode.com/problems/roman-to-integer/description/	
