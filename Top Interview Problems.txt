@@ -302,7 +302,7 @@ Approach:
 	if "AA" -> 1*26 + 1  = 27 (result)
 	if "CC" -> 3*26 + 3  = 81
 	
-Solution Code:
+Solution Code: TC: O(n) SC: O(1)
 --------------
 public class Solution {
     public int TitleToNumber(string columnTitle) {
