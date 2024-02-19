@@ -240,7 +240,7 @@ I/P: []; O/P: []
 
 Iterative Approach:
 ---------------------
-TC: O(n) SC: O(1) No extra space.
+TC: O(n) SC: O(1) no extra space.
 
 public class Solution {
     public ListNode ReverseList(ListNode head) {
@@ -262,7 +262,7 @@ public class Solution {
 
 Recursive Approach: 
 --------------------
-TC: O(n) SC: O(n)
+TC: O(n) SC: O(n) 
 
 public class Solution {
     public ListNode ReverseList(ListNode head) {
@@ -284,5 +284,40 @@ public class Solution {
 }
 
 8. https://leetcode.com/problems/excel-sheet-column-number/description/
-9. https://leetcode.com/problems/majority-element/description/
+
+I/P: 'A' -> O/P: 1
+I/P: 'AA' -> O/P: 27
+I/P: 'Z' -> O/P: 26
+I/P: 'AZ' -> O/P: 52
+
+Approach:
+---------
+	To split the characters from string, then start summing.
+	When there are more than one characters involved, obvious we know for single character it can have 26 letters
+	for the next character -> it has to be multiplied with 26 and do sum up.
+	
+	This may not be clear, lets take this with an example.
+	if "AZ" -> 1*26 + 26 = 52 (result).
+	if "BZ" -> 2*26 + 26 = 78 (result)
+	if "AA" -> 1*26 + 1  = 27 (result)
+	if "CC" -> 3*26 + 3  = 81
+	
+Solution Code:
+--------------
+public class Solution {
+    public int TitleToNumber(string columnTitle) {
+        int res = 0;
+        char[] chArray = columnTitle.ToCharArray();
+
+        for(int i=0; i < chArray.Length; i++)
+        {
+            res = res * 26 + chArray[i] - 'A' + 1;
+        }
+
+        return res;   
+    }
+}	
+	
+9.  https://leetcode.com/problems/majority-element/description/
+
 10. https://leetcode.com/problems/roman-to-integer/description/	
